@@ -81,7 +81,9 @@ return {
 
 This project uses **Mason + nvim-lspconfig + nvim-cmp** (the modern standard). It does **not** use LSP-Zero (neither the v1 API in old tutorials nor the v3 preset wrapper). All LSP setup lives in `lua/plugins/lsp.lua`.
 
-The servers list appears twice in that file — `ensure_installed` (for Mason auto-install) and the `for` loop (for `lspconfig[server].setup(...)`). Both must include any new server.
+Activation uses **nvim 0.11+'s native `vim.lsp.config()` + `vim.lsp.enable()` API** rather than the deprecated `require("lspconfig").server.setup(...)` calls (which nvim-lspconfig will remove in v3.0.0). A single `vim.lsp.config("*", { capabilities = ... })` call sets defaults for every server; `vim.lsp.enable({ ... })` activates the list. Server configs themselves come from nvim-lspconfig's bundled `lsp/<server>.lua` files via runtime path — no explicit require needed.
+
+The servers list appears twice in `lsp.lua` — `ensure_installed` (for Mason auto-install) and the `vim.lsp.enable({...})` call (for activation). Both must include any new server.
 
 Keymaps are **not** overridden. Nvim 0.11+ ships built-in LSP keymaps that fire automatically when an LSP attaches:
 
@@ -107,7 +109,7 @@ Create `lua/plugins/<name>.lua` returning a spec table. Restart nvim — lazy au
 ### Add a language server
 Edit `lua/plugins/lsp.lua`. Add the server's name to **both**:
 1. `ensure_installed = { ... }` inside the `mason-lspconfig` setup
-2. The `for _, server in ipairs({ ... })` list below it
+2. The `vim.lsp.enable({ ... })` list below it
 
 Restart nvim. Mason installs the binary in the background; status visible via `:Mason`.
 
@@ -144,4 +146,4 @@ For LSP changes specifically: open a file of the target language, run `:LspInfo`
 
 ## Requirements
 
-Nvim **0.10+** minimum (0.11+ recommended for built-in LSP keymaps). Treesitter needs a C compiler. Telescope's grep prompt needs `ripgrep`. Several LSPs need Node.js. See `README.md` for the per-OS install commands.
+Nvim **0.11+** required — the LSP setup uses `vim.lsp.config()` / `vim.lsp.enable()` which only exist in 0.11+. Treesitter needs a C compiler. Telescope's grep prompt needs `ripgrep`. Several LSPs need Node.js. See `README.md` for the per-OS install commands.

@@ -2,7 +2,7 @@
 
 A personal Neovim configuration built from scratch following [ThePrimeagen's "Neovim from scratch"](https://www.youtube.com/watch?v=w7i4amO_zaE) tutorial, modernized with current plugin versions and best practices.
 
-Built on `lazy.nvim` with inline plugin specs, native LSP via `nvim-lspconfig` + Mason, `nvim-cmp` completion, and treesitter-powered syntax highlighting.
+Built on `lazy.nvim` with inline plugin specs, native LSP via nvim 0.11's `vim.lsp.config` / `vim.lsp.enable` API (servers managed by `nvim-lspconfig` + Mason), `nvim-cmp` completion, and treesitter-powered syntax highlighting.
 
 ---
 
@@ -28,7 +28,7 @@ Built on `lazy.nvim` with inline plugin specs, native LSP via `nvim-lspconfig` +
 
 | Tool | Why | Minimum |
 | --- | --- | --- |
-| Neovim | The editor | **0.10+** (0.11 recommended for built-in LSP keymaps) |
+| Neovim | The editor | **0.11+** (required — LSP setup uses `vim.lsp.config` / `vim.lsp.enable`) |
 | git | Plugin cloning | any recent |
 | C compiler | Treesitter parsers (compiled at install) | any |
 | ripgrep (`rg`) | Telescope live grep | any |

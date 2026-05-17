@@ -33,15 +33,14 @@ return {
         },
       })
 
-      -- Tell each server that the editor supports cmp's enhanced completion items
+      -- nvim 0.11+ native LSP API. Set a global default that applies to all
+      -- servers (cmp's enhanced completion capabilities), then enable the list.
       local capabilities = require("cmp_nvim_lsp").default_capabilities()
-      local lspconfig    = require("lspconfig")
-      for _, server in ipairs({
+      vim.lsp.config("*", { capabilities = capabilities })
+      vim.lsp.enable({
         "lua_ls", "ts_ls", "rust_analyzer", "pyright", "clangd",
         "gopls", "html", "cssls", "jsonls", "yamlls", "bashls",
-      }) do
-        lspconfig[server].setup({ capabilities = capabilities })
-      end
+      })
 
       -- Completion menu (uses cmp's built-in default keymaps)
       local cmp = require("cmp")
