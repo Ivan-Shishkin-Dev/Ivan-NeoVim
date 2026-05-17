@@ -20,7 +20,7 @@ Built on `lazy.nvim` with inline plugin specs, native LSP via nvim 0.11's `vim.l
 | [nvim-lspconfig](https://github.com/neovim/nvim-lspconfig) + [mason](https://github.com/williamboman/mason.nvim) | Language server management |
 | [nvim-cmp](https://github.com/hrsh7th/nvim-cmp) + [LuaSnip](https://github.com/L3MON4D3/LuaSnip) | Completion & snippets |
 
-**Language servers auto-installed:** `lua_ls`, `ts_ls`, `rust_analyzer`, `pyright`, `clangd`, `gopls`, `html`, `cssls`, `jsonls`, `yamlls`, `bashls`.
+**Language servers auto-installed:** `lua_ls`, `ts_ls`, `rust_analyzer`, `pyright`, `clangd`, `html`, `cssls`, `jsonls`, `yamlls`, `bashls`.
 
 ---
 

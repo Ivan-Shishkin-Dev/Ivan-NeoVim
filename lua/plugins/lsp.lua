@@ -24,7 +24,6 @@ return {
           "rust_analyzer",  -- Rust
           "pyright",        -- Python
           "clangd",         -- C / C++
-          "gopls",          -- Go
           "html",
           "cssls",
           "jsonls",
@@ -39,7 +38,7 @@ return {
       vim.lsp.config("*", { capabilities = capabilities })
       vim.lsp.enable({
         "lua_ls", "ts_ls", "rust_analyzer", "pyright", "clangd",
-        "gopls", "html", "cssls", "jsonls", "yamlls", "bashls",
+        "html", "cssls", "jsonls", "yamlls", "bashls",
       })
 
       -- Completion menu (uses cmp's built-in default keymaps)

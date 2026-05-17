@@ -8,6 +8,22 @@ A personal Neovim configuration built on [lazy.nvim](https://github.com/folke/la
 
 User-facing documentation lives in `README.md`. This file is for AI assistants and contributors who need to understand the codebase's structure and conventions.
 
+## Update policy
+
+**Every meaningful change to this config MUST update both `README.md` and `CLAUDE.md` in the same commit.**
+
+Includes:
+- Adding, removing, or replacing a plugin
+- Adding or removing a language server from `lua/plugins/lsp.lua`
+- Bumping Neovim or tooling version requirements
+- Changing a public keybinding
+- Restructuring directories or boot order
+- Adopting a new API (e.g. the `vim.lsp.config` migration)
+
+Skip for: typo fixes, comment-only edits, formatting, internal refactors with no behavior change.
+
+When in doubt: update both. `README.md` is the user contract; `CLAUDE.md` is the AI/contributor contract. They drift fast if not maintained together.
+
 ## Architecture
 
 ```
