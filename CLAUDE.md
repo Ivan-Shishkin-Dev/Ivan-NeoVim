@@ -47,6 +47,7 @@ When in doubt: update both. `README.md` is the user contract; `CLAUDE.md` is the
         ├── harpoon.lua         File pinning (harpoon2 branch pinned)
         ├── undotree.lua        Undo history viewer
         ├── fugitive.lua        Git integration
+        ├── easy-align.lua      junegunn/vim-easy-align (lazy-loaded on `ga` / :EasyAlign)
         └── lsp.lua             Mason + lspconfig + nvim-cmp + LuaSnip
 ```
 

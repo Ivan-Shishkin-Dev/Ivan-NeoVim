@@ -17,6 +17,7 @@ Built on `lazy.nvim` with inline plugin specs, native LSP via nvim 0.11's `vim.l
 | [harpoon (v2)](https://github.com/ThePrimeagen/harpoon/tree/harpoon2) | Pin & jump between files |
 | [undotree](https://github.com/mbbill/undotree) | Visual undo history |
 | [vim-fugitive](https://github.com/tpope/vim-fugitive) | Git integration |
+| [vim-easy-align](https://github.com/junegunn/vim-easy-align) | Interactive alignment around a delimiter |
 | [nvim-lspconfig](https://github.com/neovim/nvim-lspconfig) + [mason](https://github.com/williamboman/mason.nvim) | Language server management |
 | [nvim-cmp](https://github.com/hrsh7th/nvim-cmp) + [LuaSnip](https://github.com/L3MON4D3/LuaSnip) | Completion & snippets |
 
@@ -210,6 +211,15 @@ Leader key is **`<Space>`**.
 | --- | --- |
 | `<leader>u` | Toggle undotree |
 
+### Align (vim-easy-align)
+
+| Keys | Action |
+| --- | --- |
+| `ga` (normal) | Start interactive align on a text object — e.g. `gaip=` aligns the inner paragraph on `=` |
+| `ga` (visual) | Start interactive align on the selection — e.g. `vipga=` |
+
+After `ga<motion>` (or `<selection>ga`) the plugin prompts for a delimiter character. Common ones: `=`, `:`, `,`, `|`, `<Space>`. Type a digit first (e.g. `2=`) to align around the *nth* occurrence, or `*` to align around every occurrence on each line. See `:help easy-align` for the full DSL.
+
 ### LSP (Neovim 0.11+ built-ins)
 
 | Keys | Action |
@@ -256,6 +266,7 @@ Leader key is **`<Space>`**.
         ├── harpoon.lua      File pinning
         ├── undotree.lua     Undo history
         ├── fugitive.lua     Git
+        ├── easy-align.lua   Interactive align around a delimiter
         └── lsp.lua          LSP + completion
 ```
 
