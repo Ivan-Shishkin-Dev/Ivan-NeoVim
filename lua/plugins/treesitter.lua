@@ -20,6 +20,7 @@ return {
         "css",
         "json",
         "c",
+        "cpp",
         "rust",
         "python",
         "markdown",

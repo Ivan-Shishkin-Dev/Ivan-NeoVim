@@ -14,8 +14,12 @@ vim.opt.shiftwidth = 4
 -- Pressing <Tab> in insert mode inserts spaces, not a literal tab character
 vim.opt.expandtab = true
 
--- Auto-indent new lines based on syntax (e.g. indent inside `{` blocks)
-vim.opt.smartindent = true
+-- New lines inherit the previous line's indent. Pairs with filetype-indent
+-- scripts (built into nvim's runtime) and treesitter `indent.enable` in
+-- lua/plugins/treesitter.lua, which provide language-aware indent on top.
+-- Intentionally NOT setting smartindent: it's a legacy C-heuristic that
+-- conflicts with `indentexpr` and was the cause of C++ snapping to col 0.
+vim.opt.autoindent = true
 
 -- Don't wrap long lines visually — they scroll horizontally instead
 vim.opt.wrap = false
