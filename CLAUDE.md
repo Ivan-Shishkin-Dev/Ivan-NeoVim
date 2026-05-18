@@ -48,6 +48,7 @@ When in doubt: update both. `README.md` is the user contract; `CLAUDE.md` is the
         ├── undotree.lua        Undo history viewer
         ├── fugitive.lua        Git integration
         ├── easy-align.lua      junegunn/vim-easy-align (lazy-loaded on `ga` / :EasyAlign)
+        ├── autopairs.lua       windwp/nvim-autopairs (lazy-loaded on InsertEnter, cmp-integrated)
         └── lsp.lua             Mason + lspconfig + nvim-cmp + LuaSnip
 ```
 

@@ -18,6 +18,7 @@ Built on `lazy.nvim` with inline plugin specs, native LSP via nvim 0.11's `vim.l
 | [undotree](https://github.com/mbbill/undotree) | Visual undo history |
 | [vim-fugitive](https://github.com/tpope/vim-fugitive) | Git integration |
 | [vim-easy-align](https://github.com/junegunn/vim-easy-align) | Interactive alignment around a delimiter |
+| [nvim-autopairs](https://github.com/windwp/nvim-autopairs) | Auto-close brackets / quotes (treesitter-aware, cmp-integrated) |
 | [nvim-lspconfig](https://github.com/neovim/nvim-lspconfig) + [mason](https://github.com/williamboman/mason.nvim) | Language server management |
 | [nvim-cmp](https://github.com/hrsh7th/nvim-cmp) + [LuaSnip](https://github.com/L3MON4D3/LuaSnip) | Completion & snippets |
 
@@ -267,6 +268,7 @@ After `ga<motion>` (or `<selection>ga`) the plugin prompts for a delimiter chara
         ├── undotree.lua     Undo history
         ├── fugitive.lua     Git
         ├── easy-align.lua   Interactive align around a delimiter
+        ├── autopairs.lua    Auto-close brackets / quotes
         └── lsp.lua          LSP + completion
 ```
 
