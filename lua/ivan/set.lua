@@ -1,7 +1,8 @@
 
--- Show the absolute line number on the line your cursor is on
-vim.opt.nu = true
--- Show relative line numbers everywhere else, so `9k` / `12j` style jumps are easy
+-- Left gutter shows relative line numbers (0 on the cursor line, distance
+-- elsewhere) so `9k` / `12j` style jumps are easy. Absolute line numbers
+-- are rendered on the RIGHT edge as virtual text by lua/ivan/right_numbers.lua.
+vim.opt.nu = false
 vim.opt.relativenumber = true
 
 -- A <Tab> character is visually 4 spaces wide

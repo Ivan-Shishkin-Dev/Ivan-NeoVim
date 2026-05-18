@@ -245,9 +245,10 @@ Leader key is **`<Space>`**.
     ├── config/
     │   └── lazy.lua         Lazy.nvim bootstrap
     ├── ivan/
-    │   ├── init.lua         Loads set + remap
+    │   ├── init.lua         Loads set + remap + right_numbers
     │   ├── set.lua          Editor options (line numbers, tabs, etc.) + leader keys
-    │   └── remap.lua        Personal keymaps
+    │   ├── remap.lua        Personal keymaps
+    │   └── right_numbers.lua  Absolute line numbers as right-aligned virtual text
     └── plugins/
         ├── tokyonight.lua   Colorscheme
         ├── telescope.lua    Fuzzy finder
