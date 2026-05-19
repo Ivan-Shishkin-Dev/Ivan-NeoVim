@@ -42,16 +42,18 @@ When in doubt: update both. `README.md` is the user contract; `CLAUDE.md` is the
     └── plugins/                  Auto-discovered by lazy via `{ import = "plugins" }`
         ├── tokyonight.lua        folke/tokyonight.nvim — colorscheme (Storm, transparent)
         ├── mini-statusline.lua   nvim-mini/mini.statusline — stock setup, loaded on VeryLazy
-        ├── bufferline.lua        akinsho/bufferline.nvim — top buffer line, needs nvim-web-devicons
+        ├── bufferline.lua        akinsho/bufferline.nvim — top buffer line, needs nvim-web-devicons; `numbers = "ordinal"` + `<leader>1`–`<leader>9` jump to position N
         ├── neo-tree.lua          nvim-neo-tree/neo-tree.nvim — sidebar tree (pinned to v3.x); `<leader>e` toggles
         ├── telescope.lua         nvim-telescope/telescope.nvim — fuzzy finder + grep
-        ├── treesitter.lua        nvim-treesitter/nvim-treesitter — highlighting (master branch pinned)
-        ├── treesitter-context.lua  nvim-treesitter/nvim-treesitter-context — sticky scope header
+        ├── treesitter.lua        nvim-treesitter/nvim-treesitter — `main` branch (rewrite); installs parsers, FileType autocmds wire `vim.treesitter.start()` + experimental indentexpr
+        ├── treesitter-context.lua nvim-treesitter/nvim-treesitter-context — sticky header showing enclosing function/class; stock setup, lazy-loaded on BufReadPre/BufNewFile
+        ├── render-markdown.lua   MeanderingProgrammer/render-markdown.nvim — in-buffer rendering for markdown (headings, code blocks, checkboxes); `ft = "markdown"`, needs the `markdown`+`markdown_inline` parsers
         ├── indent-blankline.lua  lukas-reineke/indent-blankline.nvim — v3, module name is `ibl`
         ├── todo-comments.lua     folke/todo-comments.nvim — TODO/FIXME highlights + `:TodoTelescope`
         ├── which-key.lua         folke/which-key.nvim — popup after `<leader>`, stock setup
         ├── undotree.lua          mbbill/undotree — undo viewer
-        ├── fugitive.lua          tpope/vim-fugitive — git
+        ├── fugitive.lua          tpope/vim-fugitive — git (whole-file/repo ops)
+        ├── gitsigns.lua          lewis6991/gitsigns.nvim — per-line git status in the sign column; stock setup, no keymaps (opt in via on_attach if needed)
         ├── autopairs.lua         windwp/nvim-autopairs — lazy-loaded on InsertEnter, cmp-integrated
         ├── conform.lua           stevearc/conform.nvim — `<leader>al` formats buffer; per-filetype formatter table inside
         └── lsp.lua               Mason + lspconfig + nvim-cmp + LuaSnip + friendly-snippets
@@ -173,7 +175,8 @@ For LSP changes specifically: open a file of the target language, run `:LspInfo`
 
 | Plugin | Pinned to | Why |
 |---|---|---|
-| `nvim-treesitter` | `branch = "master"` | A `main` branch with a redesigned API is under development. Pinning prevents accidental breakage if/when the default branch flips. |
+| `nvim-treesitter` | `branch = "main"` | `main` is the rewrite (and the repo's current default branch). `master` is the legacy modules API and is mostly in maintenance mode. We pin `main` explicitly so a future upstream default-branch rename doesn't silently flip us. |
+| `neo-tree.nvim` | `branch = "v3.x"` | v2 had a different setup API; pinning `v3.x` keeps us on the line of releases the spec is written against. |
 
 ## Requirements
 

@@ -1,7 +1,6 @@
 return {
   "nvim-treesitter/nvim-treesitter-context",
-  event = { "BufReadPost", "BufNewFile" },
-  dependencies = { "nvim-treesitter/nvim-treesitter" },
+  event = { "BufReadPre", "BufNewFile" },
   config = function()
     require("treesitter-context").setup({})
   end,
