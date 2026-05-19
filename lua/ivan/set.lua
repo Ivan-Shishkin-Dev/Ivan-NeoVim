@@ -50,6 +50,11 @@ vim.opt.isfname:append("@-@")
 -- How long (ms) before swap/cursorhold events fire — lower = snappier LSP diagnostics
 vim.opt.updatetime = 50
 
+-- Use the system clipboard for all yank/delete/paste operations. `unnamedplus`
+-- targets the X11 CLIPBOARD selection on Linux and the system clipboard on
+-- macOS/Windows, so `y` lands directly in Cmd-V / Ctrl-V.
+vim.opt.clipboard = "unnamedplus"
+
 -- Global leader key binding 
 vim.g.mapleader = " "
 

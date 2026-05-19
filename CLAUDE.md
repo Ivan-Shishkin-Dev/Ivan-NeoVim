@@ -164,4 +164,4 @@ For LSP changes specifically: open a file of the target language, run `:LspInfo`
 
 ## Requirements
 
-Nvim **0.11+** required — the LSP setup uses `vim.lsp.config()` / `vim.lsp.enable()` which only exist in 0.11+. Treesitter needs a C compiler. Telescope's grep prompt needs `ripgrep`. Several LSPs need Node.js. See `README.md` for the per-OS install commands.
+Nvim **0.11+** required — the LSP setup uses `vim.lsp.config()` / `vim.lsp.enable()` which only exist in 0.11+. Treesitter needs a C compiler. Telescope's grep prompt needs `ripgrep`. Several LSPs need Node.js. `vim.opt.clipboard = "unnamedplus"` is set in `lua/ivan/set.lua`, so on Linux a clipboard provider (`xclip`, `xsel`, or `wl-clipboard`) must be installed — macOS and Windows ship handlers nvim auto-detects. See `README.md` for the per-OS install commands.

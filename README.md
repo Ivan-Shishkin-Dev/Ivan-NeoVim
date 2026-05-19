@@ -35,6 +35,7 @@ Built on `lazy.nvim` with inline plugin specs, native LSP via nvim 0.11's `vim.l
 | C compiler | Treesitter parsers (compiled at install) | any |
 | ripgrep (`rg`) | Telescope live grep | any |
 | Node.js | Required by some LSPs (`ts_ls`, `pyright`, etc.) | 18+ |
+| Clipboard provider (Linux only) | Needed for the `unnamedplus` yank-to-system-clipboard behavior — `xclip`, `xsel`, or `wl-clipboard` | any |
 | A Nerd Font | Optional, for icons in your terminal | any |
 
 ---
@@ -64,7 +65,7 @@ nvim
 ```bash
 # Prerequisites
 sudo apt update
-sudo apt install neovim git ripgrep nodejs build-essential
+sudo apt install neovim git ripgrep nodejs build-essential xclip
 
 # Back up any existing config first
 mv ~/.config/nvim ~/.config/nvim.backup 2>/dev/null
@@ -82,14 +83,14 @@ nvim
 ### Linux (Arch / Manjaro)
 
 ```bash
-sudo pacman -S neovim git ripgrep nodejs base-devel
+sudo pacman -S neovim git ripgrep nodejs base-devel xclip
 # Then clone and launch as above
 ```
 
 ### Linux (Fedora)
 
 ```bash
-sudo dnf install neovim git ripgrep nodejs gcc
+sudo dnf install neovim git ripgrep nodejs gcc xclip
 # Then clone and launch as above
 ```
 
@@ -177,6 +178,8 @@ When the dust settles, check everything with:
 ## Keybindings
 
 Leader key is **`<Space>`**.
+
+> **Clipboard:** yank (`y`, `yy`, `Y`, `d`, `x`, etc.) writes directly to the system clipboard — paste with Cmd-V / Ctrl-V outside nvim, no `"+y` prefix needed. Set via `vim.opt.clipboard = "unnamedplus"` in `lua/ivan/set.lua`. On Linux, install `xclip` / `xsel` / `wl-clipboard` (see Requirements).
 
 ### Editor
 
