@@ -39,18 +39,22 @@ When in doubt: update both. `README.md` is the user contract; `CLAUDE.md` is the
     │   ├── init.lua            Loads set → remap (order matters)
     │   ├── set.lua             vim.opt.* editor options + leader keys
     │   └── remap.lua           Personal keymaps (uses <leader>)
-    └── plugins/                Auto-discovered by lazy via `{ import = "plugins" }`
-        ├── tokyonight.lua      Colorscheme (Storm, transparent)
-        ├── telescope.lua       Fuzzy finder + grep
-        ├── treesitter.lua      Syntax highlighting (master branch pinned)
-        ├── undotree.lua        Undo history viewer
-        ├── fugitive.lua        Git integration
-        ├── autopairs.lua       windwp/nvim-autopairs (lazy-loaded on InsertEnter, cmp-integrated)
-        ├── bufferline.lua      akinsho/bufferline.nvim — top buffer line, needs nvim-web-devicons
-        ├── neo-tree.lua        nvim-neo-tree/neo-tree.nvim — sidebar tree (pinned to v3.x), `<leader>e` toggles
+    └── plugins/                  Auto-discovered by lazy via `{ import = "plugins" }`
+        ├── tokyonight.lua        folke/tokyonight.nvim — colorscheme (Storm, transparent)
+        ├── mini-statusline.lua   nvim-mini/mini.statusline — stock setup, loaded on VeryLazy
+        ├── bufferline.lua        akinsho/bufferline.nvim — top buffer line, needs nvim-web-devicons
+        ├── neo-tree.lua          nvim-neo-tree/neo-tree.nvim — sidebar tree (pinned to v3.x); `<leader>e` toggles
+        ├── telescope.lua         nvim-telescope/telescope.nvim — fuzzy finder + grep
+        ├── treesitter.lua        nvim-treesitter/nvim-treesitter — highlighting (master branch pinned)
+        ├── treesitter-context.lua  nvim-treesitter/nvim-treesitter-context — sticky scope header
         ├── indent-blankline.lua  lukas-reineke/indent-blankline.nvim — v3, module name is `ibl`
-        ├── conform.lua         stevearc/conform.nvim — `<leader>al` formats buffer; per-filetype formatter table inside
-        └── lsp.lua             Mason + lspconfig + nvim-cmp + LuaSnip
+        ├── todo-comments.lua     folke/todo-comments.nvim — TODO/FIXME highlights + `:TodoTelescope`
+        ├── which-key.lua         folke/which-key.nvim — popup after `<leader>`, stock setup
+        ├── undotree.lua          mbbill/undotree — undo viewer
+        ├── fugitive.lua          tpope/vim-fugitive — git
+        ├── autopairs.lua         windwp/nvim-autopairs — lazy-loaded on InsertEnter, cmp-integrated
+        ├── conform.lua           stevearc/conform.nvim — `<leader>al` formats buffer; per-filetype formatter table inside
+        └── lsp.lua               Mason + lspconfig + nvim-cmp + LuaSnip + friendly-snippets
 ```
 
 There is **no `after/plugin/` directory**. All plugin configuration lives inline in `config = function()` blocks within `lua/plugins/<plugin>.lua`.
@@ -133,6 +137,14 @@ Edit `lua/plugins/lsp.lua`. Add the server's name to **both**:
 
 Restart nvim. Mason installs the binary in the background; status visible via `:Mason`.
 
+### Add a formatter
+Edit `lua/plugins/conform.lua`:
+1. Add an entry to `formatters_by_ft` mapping the filetype to the formatter name.
+2. If the formatter needs non-default args (e.g. forcing 4-space indent), add an entry under `formatters = { ... }` with `prepend_args = { ... }`.
+3. Install the binary: `:MasonInstall <name>` or via the system package manager.
+
+Run `:ConformInfo` in a buffer of that filetype to confirm conform sees the formatter and that the binary is on PATH.
+
 ### Add a keymap
 - Personal/global: append a `vim.keymap.set(...)` line to `lua/ivan/remap.lua`.
 - Plugin-specific: add it inside that plugin's `config = function()` block in `lua/plugins/<plugin>.lua`.
@@ -165,4 +177,8 @@ For LSP changes specifically: open a file of the target language, run `:LspInfo`
 
 ## Requirements
 
-Nvim **0.11+** required — the LSP setup uses `vim.lsp.config()` / `vim.lsp.enable()` which only exist in 0.11+. Treesitter needs a C compiler. Telescope's grep prompt needs `ripgrep`. Several LSPs need Node.js. `vim.opt.clipboard = "unnamedplus"` is set in `lua/ivan/set.lua`, so on Linux a clipboard provider (`xclip`, `xsel`, or `wl-clipboard`) must be installed — macOS and Windows ship handlers nvim auto-detects. See `README.md` for the per-OS install commands.
+Nvim **0.11+** required — the LSP setup uses `vim.lsp.config()` / `vim.lsp.enable()` which only exist in 0.11+ (tested on 0.12). Treesitter needs a C compiler. Telescope's grep prompt needs `ripgrep`. Several LSPs need Node.js. `vim.opt.clipboard = "unnamedplus"` is set in `lua/ivan/set.lua`, so on Linux a clipboard provider (`xclip`, `xsel`, or `wl-clipboard`) must be installed — macOS and Windows ship handlers nvim auto-detects.
+
+**Formatter binaries (optional):** conform.nvim is configured for a set of filetypes but the binaries (`stylua`, `black`, `prettier`, `clang-format`, `rustfmt`, `csharpier`, `shfmt`) are not bundled — install only the ones you need via Mason or the system package manager. When a formatter binary is absent, `<leader>al` falls back to LSP formatting (`lsp_fallback = true`).
+
+See `README.md` for the per-OS install commands.

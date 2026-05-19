@@ -1,8 +1,6 @@
 # Ivan-NeoVim
 
-A personal Neovim configuration built from scratch following [ThePrimeagen's "Neovim from scratch"](https://www.youtube.com/watch?v=w7i4amO_zaE) tutorial, modernized with current plugin versions and best practices.
-
-Built on `lazy.nvim` with inline plugin specs, native LSP via nvim 0.11's `vim.lsp.config` / `vim.lsp.enable` API (servers managed by `nvim-lspconfig` + Mason), `nvim-cmp` completion, and treesitter-powered syntax highlighting.
+A personal Neovim configuration built from scratch following [ThePrimeagen's "Neovim from scratch"](https://www.youtube.com/watch?v=w7i4amO_zaE) tutorial, modernized for current plugin APIs. Built on `lazy.nvim` with native LSP via nvim 0.11+'s `vim.lsp.config` / `vim.lsp.enable`, `nvim-cmp` completion, treesitter-powered highlighting, and `conform.nvim` formatting.
 
 ---
 
@@ -12,19 +10,25 @@ Built on `lazy.nvim` with inline plugin specs, native LSP via nvim 0.11's `vim.l
 | --- | --- |
 | [lazy.nvim](https://github.com/folke/lazy.nvim) | Plugin manager |
 | [tokyonight.nvim](https://github.com/folke/tokyonight.nvim) | Colorscheme (Storm, transparent) |
-| [telescope.nvim](https://github.com/nvim-telescope/telescope.nvim) | Fuzzy file finder & live grep |
+| [mini.statusline](https://github.com/nvim-mini/mini.statusline) | Statusline (mode + git + diagnostics + position) |
+| [bufferline.nvim](https://github.com/akinsho/bufferline.nvim) | Buffer tabs along the top |
+| [neo-tree.nvim](https://github.com/nvim-neo-tree/neo-tree.nvim) | Sidebar file explorer |
+| [telescope.nvim](https://github.com/nvim-telescope/telescope.nvim) | Fuzzy finder & live grep |
 | [nvim-treesitter](https://github.com/nvim-treesitter/nvim-treesitter) | Syntax highlighting & code parsing |
+| [nvim-treesitter-context](https://github.com/nvim-treesitter/nvim-treesitter-context) | Sticky scope header at top of window |
+| [indent-blankline.nvim](https://github.com/lukas-reineke/indent-blankline.nvim) | Vertical indent guides |
+| [todo-comments.nvim](https://github.com/folke/todo-comments.nvim) | Highlights & searches `TODO` / `FIXME` / `HACK` / `NOTE` |
+| [which-key.nvim](https://github.com/folke/which-key.nvim) | Popup menu of bindings after `<leader>` |
 | [undotree](https://github.com/mbbill/undotree) | Visual undo history |
 | [vim-fugitive](https://github.com/tpope/vim-fugitive) | Git integration |
 | [nvim-autopairs](https://github.com/windwp/nvim-autopairs) | Auto-close brackets / quotes (treesitter-aware, cmp-integrated) |
-| [bufferline.nvim](https://github.com/akinsho/bufferline.nvim) | Buffer tabs along the top |
-| [neo-tree.nvim](https://github.com/nvim-neo-tree/neo-tree.nvim) | Sidebar file explorer |
-| [indent-blankline.nvim](https://github.com/lukas-reineke/indent-blankline.nvim) | Vertical indent guides |
 | [conform.nvim](https://github.com/stevearc/conform.nvim) | Format-on-keystroke (Prettier / stylua / black / etc.) |
 | [nvim-lspconfig](https://github.com/neovim/nvim-lspconfig) + [mason](https://github.com/williamboman/mason.nvim) | Language server management |
 | [nvim-cmp](https://github.com/hrsh7th/nvim-cmp) + [LuaSnip](https://github.com/L3MON4D3/LuaSnip) | Completion & snippets |
 
-**Language servers auto-installed:** `lua_ls`, `ts_ls`, `rust_analyzer`, `pyright`, `clangd`, `html`, `cssls`, `jsonls`, `yamlls`, `bashls`.
+**Auto-installed language servers:** `lua_ls`, `ts_ls`, `rust_analyzer`, `pyright`, `clangd`, `html`, `cssls`, `jsonls`, `yamlls`, `bashls`.
+
+**Formatters (install separately, see below):** `stylua`, `black`, `prettier`, `clang-format`, `rustfmt`, `csharpier`, `shfmt`.
 
 ---
 
@@ -32,13 +36,15 @@ Built on `lazy.nvim` with inline plugin specs, native LSP via nvim 0.11's `vim.l
 
 | Tool | Why | Minimum |
 | --- | --- | --- |
-| Neovim | The editor | **0.11+** (required — LSP setup uses `vim.lsp.config` / `vim.lsp.enable`) |
+| Neovim | The editor | **0.11+** (uses `vim.lsp.config` / `vim.lsp.enable`; tested on 0.12) |
 | git | Plugin cloning | any recent |
-| C compiler | Treesitter parsers (compiled at install) | any |
+| C compiler | Treesitter parsers compile at install | any |
 | ripgrep (`rg`) | Telescope live grep | any |
 | Node.js | Required by some LSPs (`ts_ls`, `pyright`, etc.) | 18+ |
-| Clipboard provider (Linux only) | Needed for the `unnamedplus` yank-to-system-clipboard behavior — `xclip`, `xsel`, or `wl-clipboard` | any |
-| A Nerd Font | Optional, for icons in your terminal | any |
+| Clipboard provider (Linux only) | For `unnamedplus` yank → system clipboard. One of: `xclip`, `xsel`, `wl-clipboard` | any |
+| A Nerd Font | For bufferline / neo-tree icons | any |
+
+Formatter binaries are optional and only needed for filetypes you actually format with `<leader>al`. Install via Mason (`:MasonInstall stylua black prettier shfmt clang-format`) or your package manager.
 
 ---
 
@@ -47,7 +53,6 @@ Built on `lazy.nvim` with inline plugin specs, native LSP via nvim 0.11's `vim.l
 ### macOS
 
 ```bash
-# Prerequisites
 brew install neovim git ripgrep node
 xcode-select --install   # C compiler
 
@@ -55,154 +60,92 @@ xcode-select --install   # C compiler
 mv ~/.config/nvim ~/.config/nvim.backup 2>/dev/null
 mv ~/.local/share/nvim ~/.local/share/nvim.backup 2>/dev/null
 
-# Clone
 git clone https://github.com/Ivan-Shishkin-Dev/Ivan-NeoVim.git ~/.config/nvim
-
-# Launch
 nvim
 ```
 
-### Linux (Debian / Ubuntu)
+### Linux
+
+Install the prerequisites with your distro's package manager, then clone the same way as macOS:
+
+| Distro | Prereq command |
+| --- | --- |
+| Debian / Ubuntu | `sudo apt install neovim git ripgrep nodejs build-essential xclip` |
+| Arch / Manjaro | `sudo pacman -S neovim git ripgrep nodejs base-devel xclip` |
+| Fedora | `sudo dnf install neovim git ripgrep nodejs gcc xclip` |
 
 ```bash
-# Prerequisites
-sudo apt update
-sudo apt install neovim git ripgrep nodejs build-essential xclip
-
-# Back up any existing config first
 mv ~/.config/nvim ~/.config/nvim.backup 2>/dev/null
 mv ~/.local/share/nvim ~/.local/share/nvim.backup 2>/dev/null
-
-# Clone
 git clone https://github.com/Ivan-Shishkin-Dev/Ivan-NeoVim.git ~/.config/nvim
-
-# Launch
 nvim
 ```
 
-> If your distro ships an old Neovim (< 0.10), install from the [official releases](https://github.com/neovim/neovim/releases) or use the unstable PPA: `sudo add-apt-repository ppa:neovim-ppa/unstable`.
+> If your distro ships Neovim < 0.11, install from the [official releases](https://github.com/neovim/neovim/releases) or use the unstable PPA: `sudo add-apt-repository ppa:neovim-ppa/unstable`.
 
-### Linux (Arch / Manjaro)
+### Windows 11
 
-```bash
-sudo pacman -S neovim git ripgrep nodejs base-devel xclip
-# Then clone and launch as above
-```
-
-### Linux (Fedora)
-
-```bash
-sudo dnf install neovim git ripgrep nodejs gcc xclip
-# Then clone and launch as above
-```
-
----
-
-## Windows 11
-
-Two equivalent paths: **winget** (built into Windows) or **scoop** (preferred if you like Unix-style tooling). Pick one.
-
-### Option A — winget (no extra setup)
-
-Open **PowerShell** (not CMD):
+Use PowerShell (not CMD) with [Windows Terminal](https://aka.ms/terminal):
 
 ```powershell
-# Prerequisites
-winget install Neovim.Neovim
-winget install Git.Git
-winget install BurntSushi.ripgrep.MSVC
-winget install OpenJS.NodeJS
-winget install Microsoft.VisualStudio.2022.BuildTools    # C compiler for treesitter
-# During Build Tools install, select "Desktop development with C++"
-```
+winget install Neovim.Neovim Git.Git BurntSushi.ripgrep.MSVC OpenJS.NodeJS
+winget install Microsoft.VisualStudio.2022.BuildTools   # C compiler; tick "Desktop development with C++"
 
-Restart PowerShell so `PATH` picks up the new tools.
-
-```powershell
-# Back up any existing config
+# Restart PowerShell so PATH picks up the new tools, then:
 Move-Item $env:LOCALAPPDATA\nvim       $env:LOCALAPPDATA\nvim.backup       -ErrorAction SilentlyContinue
 Move-Item $env:LOCALAPPDATA\nvim-data  $env:LOCALAPPDATA\nvim-data.backup  -ErrorAction SilentlyContinue
-
-# Clone into Neovim's Windows config location
 git clone https://github.com/Ivan-Shishkin-Dev/Ivan-NeoVim.git $env:LOCALAPPDATA\nvim
-
-# Launch
 nvim
 ```
 
-### Option B — scoop
-
-```powershell
-# Install scoop itself (one-time)
-Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
-Invoke-RestMethod -Uri https://get.scoop.sh | Invoke-Expression
-
-# Prerequisites
-scoop install neovim git ripgrep nodejs gcc
-
-# Clone
-Move-Item $env:LOCALAPPDATA\nvim $env:LOCALAPPDATA\nvim.backup -ErrorAction SilentlyContinue
-git clone https://github.com/Ivan-Shishkin-Dev/Ivan-NeoVim.git $env:LOCALAPPDATA\nvim
-
-# Launch
-nvim
-```
-
-### Windows notes
-
-- **Config path is different on Windows.** Neovim reads from `%LOCALAPPDATA%\nvim\` (typically `C:\Users\<You>\AppData\Local\nvim\`), NOT `~\.config\nvim\`.
-- **Use a real terminal.** The default Windows console is rough. Install [Windows Terminal](https://aka.ms/terminal) from the Microsoft Store and use PowerShell 7 inside it.
-- **Transparent background:** requires a terminal that supports transparency (Windows Terminal does — Settings → Profiles → Appearance → Background opacity).
-- **Treesitter needs a C compiler.** The MSVC Build Tools install in Option A is the standard choice. Alternative: install [zig](https://ziglang.org/) and set `CC=zig cc`.
-- **If `nvim` isn't found after install,** close and reopen your terminal — `PATH` updates require a fresh shell.
+Notes:
+- Windows config lives at `%LOCALAPPDATA%\nvim\`, not `~\.config\nvim\`.
+- Transparent background needs a terminal that supports it (Windows Terminal does — Settings → Profiles → Appearance → Background opacity).
+- If `nvim` isn't found after install, open a fresh shell — PATH updates require it.
 
 ---
 
 ## First launch
 
-The first time you run `nvim`, three things happen automatically:
-
-1. **Lazy.nvim bootstraps itself** — clones into `<data>/lazy/lazy.nvim`.
-2. **Lazy installs all plugins** — a progress UI shows what's downloading. Takes ~30 seconds.
-3. **Treesitter compiles parsers** — for the languages in `ensure_installed`. Takes another 30-60s.
-4. **Mason installs language servers** — happens in the background after launch. Watch progress with `:Mason`.
-
-When the dust settles, check everything with:
+On first run, lazy bootstraps itself, installs every plugin (~30s), and treesitter compiles parsers (~30–60s). Mason installs the LSP servers in the background after the UI is up. Verify with:
 
 ```vim
-:Lazy        " plugin status
-:Mason       " LSP server status
-:checkhealth " general diagnostic
+:Lazy         " plugin install / update status
+:Mason        " LSP server install status
+:checkhealth  " general diagnostic
 ```
 
 ---
 
 ## Keybindings
 
-Leader key is **`<Space>`**.
+Leader key is **`<Space>`**. Press `<Space>` and pause briefly to see every `<leader>`-prefixed binding via which-key.
 
-> **Clipboard:** yank (`y`, `yy`, `Y`, `d`, `x`, etc.) writes directly to the system clipboard — paste with Cmd-V / Ctrl-V outside nvim, no `"+y` prefix needed. Set via `vim.opt.clipboard = "unnamedplus"` in `lua/ivan/set.lua`. On Linux, install `xclip` / `xsel` / `wl-clipboard` (see Requirements).
+> **Clipboard:** yank (`y`, `yy`, `Y`, `d`, `x`, etc.) writes directly to the system clipboard — paste with Cmd-V / Ctrl-V outside nvim, no `"+y` prefix needed. Set via `vim.opt.clipboard = "unnamedplus"` in `lua/ivan/set.lua`. On Linux, install a clipboard provider (see Requirements).
 
-### Editor
+### Editor / file navigation
 
 | Keys | Action |
 | --- | --- |
 | `<leader>pv` | Open netrw file explorer (in current window) |
 | `<leader>e` | Toggle neo-tree sidebar file explorer |
+| `<leader>pf` | Telescope: fuzzy find files |
+| `<C-p>` | Telescope: fuzzy find git-tracked files |
+| `<leader>ps` | Telescope: grep prompt across project |
+| `<leader>u` | Toggle undotree |
+| `<leader>gs` | Open git status (fugitive) |
 
 ### Buffers (bufferline)
 
-| Keys | Action |
+Bufferline ships no default keymaps — use the built-in buffer commands. Click a buffer name with the mouse to jump; middle-click to close.
+
+| Keys / command | Action |
 | --- | --- |
-| `:bnext` / `:bprev` | Cycle to next / previous buffer (built-in) |
+| `:bnext` / `:bprev` | Cycle to next / previous buffer |
 | `:bd` | Close current buffer |
-| `<C-^>` | Toggle to alternate buffer (built-in) |
+| `<C-^>` | Toggle to alternate buffer |
 
-Bufferline ships no default keymaps — it's a visual replacement for the stock tabline. Use the built-in buffer commands above. Click a buffer name with the mouse to jump, middle-click to close.
-
-### File tree (neo-tree)
-
-Inside the tree (default keybindings):
+### File tree (neo-tree, inside the tree)
 
 | Keys | Action |
 | --- | --- |
@@ -213,49 +156,39 @@ Inside the tree (default keybindings):
 | `q` | Close the tree |
 | `?` | Show all neo-tree keybindings |
 
-### Telescope
-
-| Keys | Action |
-| --- | --- |
-| `<leader>pf` | Fuzzy find files |
-| `<C-p>` | Fuzzy find git-tracked files |
-| `<leader>ps` | Grep prompt across project |
-
-### Git (fugitive)
-
-| Keys | Action |
-| --- | --- |
-| `<leader>gs` | Open git status |
-
-### Undo history
-
-| Keys | Action |
-| --- | --- |
-| `<leader>u` | Toggle undotree |
-
 ### Format (conform.nvim)
 
 | Keys | Action |
 | --- | --- |
-| `<leader>al` | Format the whole buffer using the language's formatter (Prettier-style). Preserves cursor position. |
+| `<leader>al` | Format the whole buffer using the language's formatter. Preserves cursor position. |
 
-Formatters are picked by filetype. Currently configured:
+Formatters by filetype:
 
-| Filetype | Formatter | Install with |
+| Filetype | Formatter | Install |
 | --- | --- | --- |
 | `lua` | `stylua` | `:MasonInstall stylua` |
-| `python` | `black` | `:MasonInstall black` |
-| `javascript`, `typescript`, `json`, `html`, `css`, `markdown`, `yaml` | `prettier` | `:MasonInstall prettier` or `npm i -g prettier` |
-| `c`, `cpp` | `clang-format` | `:MasonInstall clang-format` (or comes with Xcode CLT) |
+| `python` | `black` | `:MasonInstall black` or `brew install black` |
+| `javascript` / `typescript` / `json` / `html` / `css` / `markdown` / `yaml` | `prettier` | `:MasonInstall prettier` or `brew install prettier` |
+| `c` / `cpp` | `clang-format` | `:MasonInstall clang-format` or `brew install clang-format` |
 | `rust` | `rustfmt` | ships with `rustup` |
 | `cs` | `csharpier` | `dotnet tool install -g csharpier` |
-| `sh`, `bash` | `shfmt` | `:MasonInstall shfmt` |
+| `sh` / `bash` | `shfmt` | `:MasonInstall shfmt` |
 
-Any filetype not listed above falls back to the attached LSP's formatting capability (set on the `<leader>al` keymap via `lsp_fallback = true`). Run `:ConformInfo` to see which formatter would run for the current buffer.
+Anything not listed above falls back to the attached LSP's formatting capability (`lsp_fallback = true`). Run `:ConformInfo` in any buffer to see what would actually run.
 
-**Indent width:** every formatter is forced to 4-space indent to match `tabstop`/`shiftwidth` in `lua/ivan/set.lua`. clang-format, prettier, stylua and shfmt all have their defaults overridden via `prepend_args` in `conform.lua`. (Black, rustfmt, and csharpier already default to 4.)
+**Indent width:** every formatter is forced to 4-space indent to match `tabstop` / `shiftwidth` in `lua/ivan/set.lua`. clang-format, prettier, stylua, and shfmt have their defaults overridden via `prepend_args` in `lua/plugins/conform.lua`; black, rustfmt, and csharpier already default to 4. clang-format also sets `IndentAccessModifiers: true` so `public:` / `private:` indent under the class body.
 
-### LSP (Neovim 0.11+ built-ins)
+### TODO / FIXME comments (todo-comments)
+
+Keywords `TODO`, `FIXME`, `HACK`, `WARN`, `PERF`, `NOTE`, `TEST` are highlighted and indexed automatically.
+
+| Command | Action |
+| --- | --- |
+| `:TodoTelescope` | Fuzzy-find every todo comment in the project |
+| `:TodoQuickFix` | Send todo comments to the quickfix list |
+| `:TodoLocList` | Send todo comments to the location list |
+
+### LSP (Neovim 0.11+ built-ins, no overrides)
 
 | Keys | Action |
 | --- | --- |
@@ -267,7 +200,7 @@ Any filetype not listed above falls back to the attached LSP's formatting capabi
 | `gO` | Document symbols |
 | `[d` / `]d` | Prev / next diagnostic |
 | `<C-]>` | Go to definition |
-| `<C-S>` (insert mode) | Signature help |
+| `<C-S>` (insert) | Signature help |
 
 ### Completion (cmp defaults)
 
@@ -283,28 +216,32 @@ Any filetype not listed above falls back to the attached LSP's formatting capabi
 ## Project structure
 
 ```
-~/.config/nvim/              (Windows: %LOCALAPPDATA%\nvim\)
-├── init.lua                 Entry point
-├── lazy-lock.json           Plugin version lockfile (committed for reproducibility)
+~/.config/nvim/                  (Windows: %LOCALAPPDATA%\nvim\)
+├── init.lua                     Entry point
+├── lazy-lock.json               Plugin version lockfile (committed for reproducibility)
 └── lua/
     ├── config/
-    │   └── lazy.lua         Lazy.nvim bootstrap
+    │   └── lazy.lua             lazy.nvim bootstrap
     ├── ivan/
-    │   ├── init.lua         Loads set + remap
-    │   ├── set.lua          Editor options (line numbers, tabs, etc.) + leader keys
-    │   └── remap.lua        Personal keymaps
-    └── plugins/
-        ├── tokyonight.lua   Colorscheme
-        ├── telescope.lua    Fuzzy finder
-        ├── treesitter.lua   Syntax highlighting
-        ├── undotree.lua     Undo history
-        ├── fugitive.lua     Git
-        ├── autopairs.lua           Auto-close brackets / quotes
-        ├── bufferline.lua          Buffer tabs along the top
-        ├── neo-tree.lua            Sidebar file explorer
+    │   ├── init.lua             Loads set + remap
+    │   ├── set.lua              Editor options + leader keys
+    │   └── remap.lua            Personal keymaps
+    └── plugins/                 Auto-discovered by lazy
+        ├── tokyonight.lua       Colorscheme
+        ├── mini-statusline.lua  Statusline
+        ├── bufferline.lua       Top buffer-tab strip
+        ├── neo-tree.lua         Sidebar file explorer
+        ├── telescope.lua        Fuzzy finder
+        ├── treesitter.lua       Syntax highlighting
+        ├── treesitter-context.lua  Sticky scope header
         ├── indent-blankline.lua    Vertical indent guides
-        ├── conform.lua             Format-on-keystroke (Prettier / stylua / black / etc.)
-        └── lsp.lua                 LSP + completion
+        ├── todo-comments.lua    TODO / FIXME highlights
+        ├── which-key.lua        Popup menu of <leader> bindings
+        ├── undotree.lua         Undo history viewer
+        ├── fugitive.lua         Git integration
+        ├── autopairs.lua        Auto-close brackets / quotes
+        ├── conform.lua          Formatters (<leader>al)
+        └── lsp.lua              Mason + lspconfig + nvim-cmp + LuaSnip
 ```
 
 Each plugin lives in its own file under `lua/plugins/` — lazy.nvim auto-discovers them.
@@ -313,16 +250,19 @@ Each plugin lives in its own file under `lua/plugins/` — lazy.nvim auto-discov
 
 ## Customizing
 
-- **Add a plugin:** create `lua/plugins/<name>.lua` returning a lazy spec table. Restart nvim, lazy will install it.
-- **Change colorscheme:** edit `lua/plugins/tokyonight.lua` (change the `style` field) or replace the file with a different colorscheme plugin.
-- **Add a language server:** add its name to the `ensure_installed` and `servers` lists in `lua/plugins/lsp.lua`. Available names: see [mason-lspconfig docs](https://github.com/williamboman/mason-lspconfig.nvim/blob/main/doc/server-mapping.md).
-- **Add a keymap:** drop a `vim.keymap.set(...)` call into `lua/ivan/remap.lua`.
+- **Add a plugin:** create `lua/plugins/<name>.lua` returning a lazy spec table. Restart nvim, lazy installs it.
+- **Change colorscheme:** edit the `style` field in `lua/plugins/tokyonight.lua`, or replace the file with a different colorscheme plugin.
+- **Add a language server:** add its name to **both** `ensure_installed` and `vim.lsp.enable({...})` in `lua/plugins/lsp.lua`. Server names: see [mason-lspconfig docs](https://github.com/williamboman/mason-lspconfig.nvim/blob/main/doc/server-mapping.md).
+- **Add a formatter:** add an entry to `formatters_by_ft` in `lua/plugins/conform.lua`, then install the binary (Mason or your package manager).
+- **Add a keymap:** drop a `vim.keymap.set(...)` call into `lua/ivan/remap.lua` (personal) or into the plugin's `config = function()` block (plugin-specific).
+- **Add an editor option:** append `vim.opt.X = value` to `lua/ivan/set.lua`.
 
 ---
 
 ## Credits
 
 - [ThePrimeagen](https://github.com/ThePrimeagen) — the original tutorial
-- [folke](https://github.com/folke) — `lazy.nvim`, `tokyonight.nvim`
-- [tjdevries](https://github.com/tjdevries), [nvim-telescope](https://github.com/nvim-telescope) — `telescope.nvim`, `plenary.nvim`
+- [folke](https://github.com/folke) — `lazy.nvim`, `tokyonight.nvim`, `which-key.nvim`, `todo-comments.nvim`
+- [echasnovski / nvim-mini](https://github.com/nvim-mini) — `mini.statusline`
+- [stevearc](https://github.com/stevearc) — `conform.nvim`
 - Everyone in the Neovim ecosystem
