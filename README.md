@@ -16,11 +16,11 @@ Built on `lazy.nvim` with inline plugin specs, native LSP via nvim 0.11's `vim.l
 | [nvim-treesitter](https://github.com/nvim-treesitter/nvim-treesitter) | Syntax highlighting & code parsing |
 | [undotree](https://github.com/mbbill/undotree) | Visual undo history |
 | [vim-fugitive](https://github.com/tpope/vim-fugitive) | Git integration |
-| [vim-easy-align](https://github.com/junegunn/vim-easy-align) | Interactive alignment around a delimiter |
 | [nvim-autopairs](https://github.com/windwp/nvim-autopairs) | Auto-close brackets / quotes (treesitter-aware, cmp-integrated) |
 | [bufferline.nvim](https://github.com/akinsho/bufferline.nvim) | Buffer tabs along the top |
 | [neo-tree.nvim](https://github.com/nvim-neo-tree/neo-tree.nvim) | Sidebar file explorer |
 | [indent-blankline.nvim](https://github.com/lukas-reineke/indent-blankline.nvim) | Vertical indent guides |
+| [conform.nvim](https://github.com/stevearc/conform.nvim) | Format-on-keystroke (Prettier / stylua / black / etc.) |
 | [nvim-lspconfig](https://github.com/neovim/nvim-lspconfig) + [mason](https://github.com/williamboman/mason.nvim) | Language server management |
 | [nvim-cmp](https://github.com/hrsh7th/nvim-cmp) + [LuaSnip](https://github.com/L3MON4D3/LuaSnip) | Completion & snippets |
 
@@ -233,14 +233,27 @@ Inside the tree (default keybindings):
 | --- | --- |
 | `<leader>u` | Toggle undotree |
 
-### Align (vim-easy-align)
+### Format (conform.nvim)
 
 | Keys | Action |
 | --- | --- |
-| `ga` (normal) | Start interactive align on a text object — e.g. `gaip=` aligns the inner paragraph on `=` |
-| `ga` (visual) | Start interactive align on the selection — e.g. `vipga=` |
+| `<leader>al` | Format the whole buffer using the language's formatter (Prettier-style). Preserves cursor position. |
 
-After `ga<motion>` (or `<selection>ga`) the plugin prompts for a delimiter character. Common ones: `=`, `:`, `,`, `|`, `<Space>`. Type a digit first (e.g. `2=`) to align around the *nth* occurrence, or `*` to align around every occurrence on each line. See `:help easy-align` for the full DSL.
+Formatters are picked by filetype. Currently configured:
+
+| Filetype | Formatter | Install with |
+| --- | --- | --- |
+| `lua` | `stylua` | `:MasonInstall stylua` |
+| `python` | `black` | `:MasonInstall black` |
+| `javascript`, `typescript`, `json`, `html`, `css`, `markdown`, `yaml` | `prettier` | `:MasonInstall prettier` or `npm i -g prettier` |
+| `c`, `cpp` | `clang-format` | `:MasonInstall clang-format` (or comes with Xcode CLT) |
+| `rust` | `rustfmt` | ships with `rustup` |
+| `cs` | `csharpier` | `dotnet tool install -g csharpier` |
+| `sh`, `bash` | `shfmt` | `:MasonInstall shfmt` |
+
+Any filetype not listed above falls back to the attached LSP's formatting capability (set on the `<leader>al` keymap via `lsp_fallback = true`). Run `:ConformInfo` to see which formatter would run for the current buffer.
+
+**Indent width:** every formatter is forced to 4-space indent to match `tabstop`/`shiftwidth` in `lua/ivan/set.lua`. clang-format, prettier, stylua and shfmt all have their defaults overridden via `prepend_args` in `conform.lua`. (Black, rustfmt, and csharpier already default to 4.)
 
 ### LSP (Neovim 0.11+ built-ins)
 
@@ -286,11 +299,11 @@ After `ga<motion>` (or `<selection>ga`) the plugin prompts for a delimiter chara
         ├── treesitter.lua   Syntax highlighting
         ├── undotree.lua     Undo history
         ├── fugitive.lua     Git
-        ├── easy-align.lua          Interactive align around a delimiter
         ├── autopairs.lua           Auto-close brackets / quotes
         ├── bufferline.lua          Buffer tabs along the top
         ├── neo-tree.lua            Sidebar file explorer
         ├── indent-blankline.lua    Vertical indent guides
+        ├── conform.lua             Format-on-keystroke (Prettier / stylua / black / etc.)
         └── lsp.lua                 LSP + completion
 ```
 

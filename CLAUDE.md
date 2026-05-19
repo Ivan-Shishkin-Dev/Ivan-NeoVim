@@ -45,11 +45,11 @@ When in doubt: update both. `README.md` is the user contract; `CLAUDE.md` is the
         ├── treesitter.lua      Syntax highlighting (master branch pinned)
         ├── undotree.lua        Undo history viewer
         ├── fugitive.lua        Git integration
-        ├── easy-align.lua      junegunn/vim-easy-align (lazy-loaded on `ga` / :EasyAlign)
         ├── autopairs.lua       windwp/nvim-autopairs (lazy-loaded on InsertEnter, cmp-integrated)
         ├── bufferline.lua      akinsho/bufferline.nvim — top buffer line, needs nvim-web-devicons
         ├── neo-tree.lua        nvim-neo-tree/neo-tree.nvim — sidebar tree (pinned to v3.x), `<leader>e` toggles
         ├── indent-blankline.lua  lukas-reineke/indent-blankline.nvim — v3, module name is `ibl`
+        ├── conform.lua         stevearc/conform.nvim — `<leader>al` formats buffer; per-filetype formatter table inside
         └── lsp.lua             Mason + lspconfig + nvim-cmp + LuaSnip
 ```
 
