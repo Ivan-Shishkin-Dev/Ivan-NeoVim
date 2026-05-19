@@ -14,11 +14,13 @@ Built on `lazy.nvim` with inline plugin specs, native LSP via nvim 0.11's `vim.l
 | [tokyonight.nvim](https://github.com/folke/tokyonight.nvim) | Colorscheme (Storm, transparent) |
 | [telescope.nvim](https://github.com/nvim-telescope/telescope.nvim) | Fuzzy file finder & live grep |
 | [nvim-treesitter](https://github.com/nvim-treesitter/nvim-treesitter) | Syntax highlighting & code parsing |
-| [harpoon (v2)](https://github.com/ThePrimeagen/harpoon/tree/harpoon2) | Pin & jump between files |
 | [undotree](https://github.com/mbbill/undotree) | Visual undo history |
 | [vim-fugitive](https://github.com/tpope/vim-fugitive) | Git integration |
 | [vim-easy-align](https://github.com/junegunn/vim-easy-align) | Interactive alignment around a delimiter |
 | [nvim-autopairs](https://github.com/windwp/nvim-autopairs) | Auto-close brackets / quotes (treesitter-aware, cmp-integrated) |
+| [bufferline.nvim](https://github.com/akinsho/bufferline.nvim) | Buffer tabs along the top |
+| [neo-tree.nvim](https://github.com/nvim-neo-tree/neo-tree.nvim) | Sidebar file explorer |
+| [indent-blankline.nvim](https://github.com/lukas-reineke/indent-blankline.nvim) | Vertical indent guides |
 | [nvim-lspconfig](https://github.com/neovim/nvim-lspconfig) + [mason](https://github.com/williamboman/mason.nvim) | Language server management |
 | [nvim-cmp](https://github.com/hrsh7th/nvim-cmp) + [LuaSnip](https://github.com/L3MON4D3/LuaSnip) | Completion & snippets |
 
@@ -185,7 +187,31 @@ Leader key is **`<Space>`**.
 
 | Keys | Action |
 | --- | --- |
-| `<leader>pv` | Open file explorer (netrw) |
+| `<leader>pv` | Open netrw file explorer (in current window) |
+| `<leader>e` | Toggle neo-tree sidebar file explorer |
+
+### Buffers (bufferline)
+
+| Keys | Action |
+| --- | --- |
+| `:bnext` / `:bprev` | Cycle to next / previous buffer (built-in) |
+| `:bd` | Close current buffer |
+| `<C-^>` | Toggle to alternate buffer (built-in) |
+
+Bufferline ships no default keymaps — it's a visual replacement for the stock tabline. Use the built-in buffer commands above. Click a buffer name with the mouse to jump, middle-click to close.
+
+### File tree (neo-tree)
+
+Inside the tree (default keybindings):
+
+| Keys | Action |
+| --- | --- |
+| `<CR>` | Open file / expand directory |
+| `a` / `d` / `r` | Add / delete / rename |
+| `c` / `m` | Copy / move |
+| `H` | Toggle hidden files |
+| `q` | Close the tree |
+| `?` | Show all neo-tree keybindings |
 
 ### Telescope
 
@@ -194,14 +220,6 @@ Leader key is **`<Space>`**.
 | `<leader>pf` | Fuzzy find files |
 | `<C-p>` | Fuzzy find git-tracked files |
 | `<leader>ps` | Grep prompt across project |
-
-### Harpoon
-
-| Keys | Action |
-| --- | --- |
-| `<leader>a` | Add current file to harpoon list |
-| `<C-e>` | Toggle harpoon menu |
-| `<C-h>` `<C-t>` `<C-n>` `<C-s>` | Jump to harpoon file 1, 2, 3, 4 |
 
 ### Git (fugitive)
 
@@ -266,12 +284,14 @@ After `ga<motion>` (or `<selection>ga`) the plugin prompts for a delimiter chara
         ├── tokyonight.lua   Colorscheme
         ├── telescope.lua    Fuzzy finder
         ├── treesitter.lua   Syntax highlighting
-        ├── harpoon.lua      File pinning
         ├── undotree.lua     Undo history
         ├── fugitive.lua     Git
-        ├── easy-align.lua   Interactive align around a delimiter
-        ├── autopairs.lua    Auto-close brackets / quotes
-        └── lsp.lua          LSP + completion
+        ├── easy-align.lua          Interactive align around a delimiter
+        ├── autopairs.lua           Auto-close brackets / quotes
+        ├── bufferline.lua          Buffer tabs along the top
+        ├── neo-tree.lua            Sidebar file explorer
+        ├── indent-blankline.lua    Vertical indent guides
+        └── lsp.lua                 LSP + completion
 ```
 
 Each plugin lives in its own file under `lua/plugins/` — lazy.nvim auto-discovers them.
@@ -289,7 +309,7 @@ Each plugin lives in its own file under `lua/plugins/` — lazy.nvim auto-discov
 
 ## Credits
 
-- [ThePrimeagen](https://github.com/ThePrimeagen) — the original tutorial and `harpoon`
+- [ThePrimeagen](https://github.com/ThePrimeagen) — the original tutorial
 - [folke](https://github.com/folke) — `lazy.nvim`, `tokyonight.nvim`
 - [tjdevries](https://github.com/tjdevries), [nvim-telescope](https://github.com/nvim-telescope) — `telescope.nvim`, `plenary.nvim`
 - Everyone in the Neovim ecosystem

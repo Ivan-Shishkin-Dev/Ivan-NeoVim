@@ -4,7 +4,7 @@ Project-level guidance for Claude Code when working in this repository.
 
 ## Overview
 
-A personal Neovim configuration built on [lazy.nvim](https://github.com/folke/lazy.nvim) using idiomatic single-file-per-plugin specs. Structurally inspired by ThePrimeagen's "Neovim from scratch" tutorial but modernized for current plugin APIs (Packer → lazy.nvim, LSP-Zero → Mason+lspconfig+nvim-cmp, Harpoon → harpoon2, treesitter playground → core `:InspectTree`).
+A personal Neovim configuration built on [lazy.nvim](https://github.com/folke/lazy.nvim) using idiomatic single-file-per-plugin specs. Structurally inspired by ThePrimeagen's "Neovim from scratch" tutorial but modernized for current plugin APIs (Packer → lazy.nvim, LSP-Zero → Mason+lspconfig+nvim-cmp, treesitter playground → core `:InspectTree`).
 
 User-facing documentation lives in `README.md`. This file is for AI assistants and contributors who need to understand the codebase's structure and conventions.
 
@@ -43,11 +43,13 @@ When in doubt: update both. `README.md` is the user contract; `CLAUDE.md` is the
         ├── tokyonight.lua      Colorscheme (Storm, transparent)
         ├── telescope.lua       Fuzzy finder + grep
         ├── treesitter.lua      Syntax highlighting (master branch pinned)
-        ├── harpoon.lua         File pinning (harpoon2 branch pinned)
         ├── undotree.lua        Undo history viewer
         ├── fugitive.lua        Git integration
         ├── easy-align.lua      junegunn/vim-easy-align (lazy-loaded on `ga` / :EasyAlign)
         ├── autopairs.lua       windwp/nvim-autopairs (lazy-loaded on InsertEnter, cmp-integrated)
+        ├── bufferline.lua      akinsho/bufferline.nvim — top buffer line, needs nvim-web-devicons
+        ├── neo-tree.lua        nvim-neo-tree/neo-tree.nvim — sidebar tree (pinned to v3.x), `<leader>e` toggles
+        ├── indent-blankline.lua  lukas-reineke/indent-blankline.nvim — v3, module name is `ibl`
         └── lsp.lua             Mason + lspconfig + nvim-cmp + LuaSnip
 ```
 
@@ -160,7 +162,6 @@ For LSP changes specifically: open a file of the target language, run `:LspInfo`
 | Plugin | Pinned to | Why |
 |---|---|---|
 | `nvim-treesitter` | `branch = "master"` | A `main` branch with a redesigned API is under development. Pinning prevents accidental breakage if/when the default branch flips. |
-| `ThePrimeagen/harpoon` | `branch = "harpoon2"` | v1's API (`require("harpoon.mark")`) is incompatible with v2's (`harpoon:list():add()`). Old tutorials show v1 — do not follow them. |
 
 ## Requirements
 
