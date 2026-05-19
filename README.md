@@ -256,10 +256,9 @@ After `ga<motion>` (or `<selection>ga`) the plugin prompts for a delimiter chara
     ├── config/
     │   └── lazy.lua         Lazy.nvim bootstrap
     ├── ivan/
-    │   ├── init.lua         Loads set + remap + right_numbers
+    │   ├── init.lua         Loads set + remap
     │   ├── set.lua          Editor options (line numbers, tabs, etc.) + leader keys
-    │   ├── remap.lua        Personal keymaps
-    │   └── right_numbers.lua  Absolute line numbers as right-aligned virtual text
+    │   └── remap.lua        Personal keymaps
     └── plugins/
         ├── tokyonight.lua   Colorscheme
         ├── telescope.lua    Fuzzy finder

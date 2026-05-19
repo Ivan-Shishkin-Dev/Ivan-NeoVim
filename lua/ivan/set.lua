@@ -1,7 +1,6 @@
 
--- Left gutter shows relative line numbers (0 on the cursor line, distance
--- elsewhere) so `9k` / `12j` style jumps are easy. Absolute line numbers
--- are rendered on the RIGHT edge as virtual text by lua/ivan/right_numbers.lua.
+-- Relative line numbers (0 on the cursor line, distance elsewhere) so
+-- `9k` / `12j` style jumps are easy.
 vim.opt.nu = false
 vim.opt.relativenumber = true
 

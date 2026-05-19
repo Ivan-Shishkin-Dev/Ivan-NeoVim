@@ -36,10 +36,9 @@ When in doubt: update both. `README.md` is the user contract; `CLAUDE.md` is the
     ├── config/
     │   └── lazy.lua            lazy.nvim bootstrap (clone + setup call)
     ├── ivan/                   Personal settings (namespace = user's name)
-    │   ├── init.lua            Loads set → remap → right_numbers (order matters)
+    │   ├── init.lua            Loads set → remap (order matters)
     │   ├── set.lua             vim.opt.* editor options + leader keys
-    │   ├── remap.lua           Personal keymaps (uses <leader>)
-    │   └── right_numbers.lua   Decoration provider: right-aligned absolute line numbers
+    │   └── remap.lua           Personal keymaps (uses <leader>)
     └── plugins/                Auto-discovered by lazy via `{ import = "plugins" }`
         ├── tokyonight.lua      Colorscheme (Storm, transparent)
         ├── telescope.lua       Fuzzy finder + grep
@@ -61,8 +60,7 @@ nvim starts
 └── init.lua
     ├── require("ivan")                    → lua/ivan/init.lua
     │   ├── require("ivan.set")            → sets vim.opt.* AND vim.g.mapleader
-    │   ├── require("ivan.remap")          → vim.keymap.set("<leader>...", ...)
-    │   └── require("ivan.right_numbers")  → registers right-aligned line-number provider
+    │   └── require("ivan.remap")          → vim.keymap.set("<leader>...", ...)
     └── require("config.lazy")             → bootstraps lazy + imports lua/plugins/*
 ```
 
